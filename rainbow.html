@@ -233,11 +233,17 @@ footer .brandmark:hover img{opacity:1}
   <pre>total supply = 210,000 × Σ floor(5,000,000,000 / 2ⁱ) sat   for i = 0 … 32
              = 2,099,999,997,690,000 sat
              = <b>20,999,999.9769 BTC</b>  — forever less than 21 million, forever approaching it</pre>
-  <p>The subsidy reaches zero at block <b>6,930,000</b>; at exactly ten minutes per block from the
-  genesis stamp that lands on <b>2140-10-08</b> — the famous "around 2140" (blocks have averaged
-  slightly under ten minutes, so reality runs a little early). The asymmetry worth feeling:
-  <b>99% of all bitcoin will exist by ~November 2035</b> — inside the five-year-plus-one window of
-  §IV — while the last 1% takes the remaining century. The sentence is ambiguous; the ambiguity is
+  <p>The subsidy reaches zero at block <b>6,930,000</b> (the last satoshi of subsidy is paid one
+  block earlier, at 6,929,999). Anchored to the live chain — height <b>961,239</b> on 2026-08-05,
+  mempool.space and blockchain.info agreeing — the remaining 5,968,761 blocks at the ten-minute
+  difficulty target land in <b>January 2140</b>; the naive schedule from the genesis stamp says
+  2140-10-08; the canonical answer is the famous <b>"around 2140"</b> (the chain has historically
+  run ahead of its own calendar — every halving has arrived early). Emission is already mostly
+  history: at height 961,239 exactly <b>20,066,371.875 BTC</b> exist — <b>95.55% of all bitcoin
+  that will ever be</b> — the next halving (block 1,050,000) is 88,761 blocks out, ≈ <b>April
+  2028</b> chain-anchored, and <b>99% of the supply will exist by early 2035</b> (block 1,411,200,
+  ≈ Feb–Mar) — inside the five-year-plus-one window of §IV — while the last 1% takes the
+  remaining century. The sentence is ambiguous; the ambiguity is
   the point: one reading is a hope priced in dollars, the other is a certainty priced in blocks, and
   the whole discipline of this page is knowing which kind of claim you are holding.</p>
   <div class="hi"><div class="t">here to stay</div>
@@ -260,7 +266,15 @@ python3 -c "import math; print(math.log10(64482)-(5.380917*math.log10(6423)-15.4
 
 # the 21-million guarantee (supply, not price)
 python3 -c "print(sum(210000*(50*10**8>>i) for i in range(33)))"   # 2099999997690000 sat
-python3 -c "print(6930000*600/31557600+2009.0)"                    # subsidy ends ≈ 2140</pre>
+python3 -c "print(6930000*600/31557600+2009.0)"                    # naive genesis schedule ≈ 2140
+
+# chain-anchored (live tip 961,239 @ 2026-08-05; two independent sources)
+curl -s https://mempool.space/api/blocks/tip/height
+curl -s https://blockchain.info/q/getblockcount
+python3 -c "print(19687500 + (961239-840000)*3.125)"               # 20066371.875 BTC exist (95.55%)
+python3 -c "print((6930000-961239)*600/31557600 + 2026.6)"         # subsidy ends ≈ 2140.1
+python3 -c "print((1411200-961239)*600/31557600 + 2026.6)"         # 99% of supply ≈ 2035.15
+python3 -c "print((1050000-961239)*600/86400)"                     # next halving in ~616 days ≈ 2028-04</pre>
   <p class="cite" style="font-size:13px">Lineage: the original rainbow chart tradition
   (bitcointalk log-regression threads, 2014; Blockchaincenter's popularization) — rebuilt here from
   first principles. Data: DeFiLlama (primary feed), CoinGecko, CoinMarketCap (references).
